@@ -3,6 +3,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color: #050505;
+  color: white;
+}
+
+img {
+  user-select: none;
+  background-color: transparent;
 }
 
 /* :root {

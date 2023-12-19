@@ -1,0 +1,52 @@
+<script setup lang="ts"></script>
+
+<template>
+  <div class="container-search">
+    <div class="search-div">
+      <input
+        class="search-input"
+        type="text"
+        placeholder="Search for any world..."
+      />
+      <button class="search-icon">
+        <img src="../assets/icon-search.svg" alt="" />
+      </button>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.search-input {
+  padding: 20px;
+  border: none;
+  background-color: #1f1f1f;
+  font: 1.25rem;
+  width: 100%;
+  max-width: 740px;
+  margin: 0 auto 0 auto;
+  border-radius: 1rem;
+}
+.container-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.search-div {
+  position: relative;
+  width: 100%;
+  max-width: 740px;
+}
+
+.search-icon {
+  position: absolute;
+  background-color: transparent;
+  right: 0;
+  border: none;
+  cursor: pointer;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding-right: 10px;
+}
+</style>

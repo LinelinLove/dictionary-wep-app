@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import Header from "./components/Header.vue";
+import SearchBar from "./components/SearchBar.vue";
+import World from "./components/World.vue";
 </script>
 
 <template>
   <Header msg="Coucou" />
+  <SearchBar />
+  <World />
 </template>
 
 <!-- <style scoped>
