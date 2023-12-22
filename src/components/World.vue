@@ -18,6 +18,20 @@ onMounted(async () => {
   }
 });
 
+const handleMouseEnter = () => {
+  const circle = document.getElementById("circle-fill");
+  if (circle) {
+    circle.classList.add("hovered");
+  }
+};
+
+const handleMouseLeave = () => {
+  const circle = document.getElementById("circle-fill");
+  if (circle) {
+    circle.classList.remove("hovered");
+  }
+};
+
 function playAudio(urlAudio: string | undefined) {
   var audio = new Audio(urlAudio);
   audio.play();
@@ -30,15 +44,33 @@ function playAudio(urlAudio: string | undefined) {
       <div>
         <h1>{{ item.word }}</h1>
         <p class="pronunciation">{{ item.phonetics[1].text }}</p>
-        <!-- <p class="pronunciation">{{ item.phonetics[1].audio }}</p> -->
       </div>
       <div>
-        <img
-          class="play"
+        <svg
+          class="play-icon"
+          width="75"
+          height="75"
+          viewBox="0 0 75 75"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
           v-on:click="playAudio(item.phonetics[0].audio)"
-          src="../assets/icon-play.svg"
-          alt=""
-        />
+          @mouseenter="handleMouseEnter"
+          @mouseleave="handleMouseLeave"
+        >
+          <circle
+            cx="37.5"
+            cy="37.5"
+            r="37.5"
+            class="circle-fill"
+            id="circle-fill"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M29 27V48L50 37.5L29 27Z"
+            class="path-fill"
+          />
+        </svg>
       </div>
     </div>
 
@@ -81,10 +113,6 @@ function playAudio(urlAudio: string | undefined) {
 </template>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
-}
-
 section {
   max-width: 740px;
   margin: 0 auto 50px auto;
@@ -96,7 +124,7 @@ h1 {
 }
 
 .pronunciation {
-  color: hsl(274deg, 82%, 60%);
+  color: var(--purple);
   font-size: 24px;
 }
 
@@ -127,7 +155,7 @@ ul {
 
 ul li::before {
   content: "\2022";
-  color: red;
+  color: var(--purple);
   font-weight: bold;
   display: inline-block;
   width: 1em;
@@ -138,13 +166,35 @@ ul li::before {
   padding-top: 1.5rem;
 }
 
-.play {
+/* test */
+.play-icon {
   cursor: pointer;
+  transition: fill 0.3s ease;
 }
 
-.play:hover {
-  /* fill: var(--theme-play-hover); */
-  /* color: var(--theme-play-highlight); */
-  opacity: 0.9;
+.circle-fill {
+  opacity: 0.25;
+  fill: var(--purple);
+}
+
+.circle-fill:hover {
+  fill: #a445ed;
+  opacity: 1;
+}
+
+.path-fill {
+  fill: var(--purple);
+}
+
+.path-fill:hover {
+  fill: white;
+}
+
+.circle-fill:hover ~ .path-fill {
+  fill: white;
+}
+.circle-fill.hovered {
+  fill: #a445ed;
+  opacity: 1;
 }
 </style>
