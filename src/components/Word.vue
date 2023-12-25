@@ -1,22 +1,46 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-const apiData = ref([] as any[]);
+import { ref, watch, defineProps } from "vue";
 
-onMounted(async () => {
+const apiData = ref([] as any[]);
+const props = defineProps(["searchValue"]);
+const showSvg = ref(false);
+// console.log(showSvg.value);
+
+watch(() => {
+  // Vérifiez si props.searchValue est défini et non vide
+  if (
+    props.searchValue !== null &&
+    props.searchValue !== undefined &&
+    props.searchValue.trim() !== ""
+  ) {
+    fetchData();
+  }
+});
+
+const fetchData = async () => {
+  // console.log("Received searchValue in Word component:", props.searchValue);
+
+  const searchTerm = props.searchValue;
+  // console.log("Search term in Word component:", searchTerm);
+
   try {
     const response = await fetch(
-      "https://api.dictionaryapi.dev/api/v2/entries/en/hello"
+      `https://api.dictionaryapi.dev/api/v2/entries/en/${searchTerm}`
     );
+
     if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
 
     apiData.value = await response.json();
     console.log(apiData.value);
+
+    // Appeler playFirstAudio ici directement après le fetch
+    isAudio(apiData.value[0]?.phonetics || []);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
-});
+};
 
 const handleMouseEnter = () => {
   const circle = document.getElementById("circle-fill");
@@ -36,24 +60,72 @@ function playAudio(urlAudio: string | undefined) {
   var audio = new Audio(urlAudio);
   audio.play();
 }
+
+const isAudio = (phonetics: { audio: string }[]) => {
+  const audioToPlay = phonetics.find(
+    (phonetic) => phonetic.audio && phonetic.audio.trim() !== ""
+  );
+
+  if (!audioToPlay) {
+    // Aucun audio valide trouvé
+    console.warn("Aucun audio trouvé ou audio vide.");
+    showSvg.value = false;
+  } else {
+    showSvg.value = true;
+  }
+};
+
+const playFirstAudio = (phonetics: { audio: string }[]) => {
+  const audioToPlay = phonetics.find(
+    (phonetic) => phonetic.audio && phonetic.audio.trim() !== ""
+  );
+
+  if (audioToPlay) {
+    playAudio(audioToPlay.audio);
+  } else {
+    // Aucun audio valide trouvé
+    console.warn("Aucun audio trouvé ou audio vide.");
+    showSvg.value = false;
+  }
+};
+
+const isPhonetic = (phonetics: { text: string }[]) => {
+  const findPhonetics = phonetics.find(
+    (phonetic) => phonetic.text && phonetic.text.trim() !== ""
+  );
+
+  if (!findPhonetics) {
+    // Aucun audio valide trouvé
+    console.warn("Aucun phonetic trouvé.");
+    // showSvg.value = false;
+  } else {
+    return findPhonetics;
+  }
+};
 </script>
 
 <template>
-  <section v-for="item in apiData" :key="item.id">
+  <section v-for="(item, index) in apiData" :key="index">
     <div class="name-container">
-      <div>
+      <div v-if="index === 0">
         <h1>{{ item.word }}</h1>
-        <p class="pronunciation">{{ item.phonetics[1].text }}</p>
+        <p
+          v-if="item.phonetics.length != 0 || isPhonetic(item.phonetics)"
+          class="pronunciation"
+        >
+          {{ isPhonetic(item.phonetics)?.text || item.phonetic }}
+        </p>
       </div>
-      <div>
+      <div v-if="index === 0">
         <svg
+          v-if="showSvg"
           class="play-icon"
           width="75"
           height="75"
           viewBox="0 0 75 75"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          v-on:click="playAudio(item.phonetics[0].audio)"
+          v-on:click="playFirstAudio(item.phonetics)"
           @mouseenter="handleMouseEnter"
           @mouseleave="handleMouseLeave"
         >
@@ -105,7 +177,9 @@ function playAudio(urlAudio: string | undefined) {
       <p class="source">Source</p>
       <ul>
         <li v-for="url in item.sourceUrls">
-          {{ url }} <img src="../assets/icon-new-window.svg" alt="" />
+          <a :href="url">
+            {{ url }} <img src="../assets/icon-new-window.svg" alt="" />
+          </a>
         </li>
       </ul>
     </div>

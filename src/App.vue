@@ -1,26 +1,20 @@
 <script setup lang="ts">
 import Header from "./components/Header.vue";
 import SearchBar from "./components/SearchBar.vue";
-import World from "./components/World.vue";
+import Word from "./components/Word.vue";
+import { ref } from "vue";
+
+const searchValue = ref("");
+
+// La fonction handleChange reçoit la valeur de l'input et met à jour searchValue
+const handleSearchSubmit = (value: string) => {
+  searchValue.value = value;
+  // console.log("App : ", searchValue.value);
+};
 </script>
 
 <template>
-  <Header msg="Coucou" />
-  <SearchBar />
-  <World />
+  <Header />
+  <SearchBar @submit="handleSearchSubmit" />
+  <Word :searchValue="searchValue" />
 </template>
-
-<!-- <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style> -->

@@ -1,4 +1,18 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, defineEmits } from "vue";
+
+const emits = defineEmits();
+
+const inputValue = ref("");
+
+const handleChange = () => {
+  emits("submit", inputValue.value);
+};
+
+const submit = () => {
+  handleChange();
+};
+</script>
 
 <template>
   <div class="container-search">
@@ -6,9 +20,10 @@
       <input
         class="search-input"
         type="text"
-        placeholder="Search for any world..."
+        v-model="inputValue"
+        placeholder="Search for any word..."
       />
-      <button class="search-icon">
+      <button class="search-icon" @click="submit">
         <img src="../assets/icon-search.svg" alt="" />
       </button>
     </div>
