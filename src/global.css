@@ -66,8 +66,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: #050505;
-  color: white;
+}
+body {
+  background-color: var(--grey-light);
+  color: var(--black-4);
 }
 
 img {

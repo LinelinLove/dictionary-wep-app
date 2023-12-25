@@ -91,6 +91,8 @@ watch(selectedOption, (newVal) => {
 .options div {
   padding: 10px;
   cursor: pointer;
+  background-color: var(--grey-primary);
+  color: inherit;
 }
 
 .custom-select:hover .options {

@@ -1,5 +1,24 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import Select from "./Select.vue";
+const isDarkMode = ref(false);
+
+const toggleDarkMode = () => {
+  console.log("Dark mode toggled:", isDarkMode.value);
+
+  const body = document.body;
+  if (isDarkMode.value) {
+    // body.classList.add("dark-mode");
+    body.style.backgroundColor = "black";
+    body.style.color = "white";
+    console.log("dark");
+  } else {
+    // body.classList.remove("dark-mode");
+    body.style.backgroundColor = "white";
+    body.style.color = "black";
+    console.log("light");
+  }
+};
 </script>
 
 <template>
@@ -8,15 +27,9 @@ import Select from "./Select.vue";
       <img src="../assets/logo.svg" alt="" />
     </div>
     <div class="header-right">
-      <!-- <p class="font">Sans-serif</p> -->
-      <!-- <select name="font" id="font-select">
-        <option value="serif">Serif</option>
-        <option value="sans-serif">Sans-serif</option>
-        <option value="mono">Mono</option>
-      </select> -->
       <Select />
       <label class="switch">
-        <input type="checkbox" />
+        <input type="checkbox" @change="toggleDarkMode" v-model="isDarkMode" />
         <span class="slider round"></span>
       </label>
 
@@ -26,6 +39,12 @@ import Select from "./Select.vue";
 </template>
 
 <style scoped>
+/* Dark mode styles */
+.dark-mode {
+  background-color: blue;
+  color: red;
+}
+
 .header {
   display: flex;
   align-items: center;
