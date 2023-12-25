@@ -4,7 +4,6 @@ import { ref, watch, defineProps } from "vue";
 const apiData = ref([] as any[]);
 const props = defineProps(["searchValue"]);
 const showSvg = ref(false);
-// console.log(showSvg.value);
 
 watch(() => {
   // Vérifiez si props.searchValue est défini et non vide
@@ -18,8 +17,6 @@ watch(() => {
 });
 
 const fetchData = async () => {
-  // console.log("Received searchValue in Word component:", props.searchValue);
-
   const searchTerm = props.searchValue;
   // console.log("Search term in Word component:", searchTerm);
 
@@ -67,7 +64,6 @@ const isAudio = (phonetics: { audio: string }[]) => {
   );
 
   if (!audioToPlay) {
-    // Aucun audio valide trouvé
     console.warn("Aucun audio trouvé ou audio vide.");
     showSvg.value = false;
   } else {
@@ -83,7 +79,6 @@ const playFirstAudio = (phonetics: { audio: string }[]) => {
   if (audioToPlay) {
     playAudio(audioToPlay.audio);
   } else {
-    // Aucun audio valide trouvé
     console.warn("Aucun audio trouvé ou audio vide.");
     showSvg.value = false;
   }
@@ -95,9 +90,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
   );
 
   if (!findPhonetics) {
-    // Aucun audio valide trouvé
     console.warn("Aucun phonetic trouvé.");
-    // showSvg.value = false;
   } else {
     return findPhonetics;
   }
@@ -105,7 +98,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 </script>
 
 <template>
-  <section v-for="(item, index) in apiData" :key="index">
+  <section v-for="(item, index) in apiData" :key="index" class="section">
     <div class="name-container">
       <div v-if="index === 0">
         <h1>{{ item.word }}</h1>
@@ -147,7 +140,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
     </div>
 
     <div v-for="meaning in item.meanings" :key="meaning.id" class="subtitle">
-      <h2>{{ meaning.partOfSpeech }}</h2>
+      <h2 class="meaning">{{ meaning.partOfSpeech }}</h2>
       <p>Meaning</p>
       <ul>
         <li v-for="meaningObject in meaning.definitions" :key="meaning.id">
@@ -187,14 +180,9 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 </template>
 
 <style scoped>
-section {
+.section {
   max-width: 740px;
   margin: 0 auto 50px auto;
-}
-
-h1 {
-  font-size: 64px;
-  line-height: normal;
 }
 
 .pronunciation {
@@ -209,14 +197,14 @@ h1 {
   align-items: center;
 }
 
-h2:after {
+.meaning:after {
   content: "";
   align-self: center;
   background: #fff;
   height: 1px;
   margin-top: 10px;
 }
-h2 {
+.meaning {
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: auto 1fr;

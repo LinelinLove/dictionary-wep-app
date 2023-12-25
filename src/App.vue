@@ -11,6 +11,13 @@ const handleSearchSubmit = (value: string) => {
   searchValue.value = value;
   // console.log("App : ", searchValue.value);
 };
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   const body = document.querySelector("body");
+//   if (body) {
+//     body.style.fontFamily = "var(--mono-regular)";
+//   }
+// });
 </script>
 
 <template>

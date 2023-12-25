@@ -1,16 +1,20 @@
 <script setup lang="ts">
-// defineProps<{ msg: string }>();
+import Select from "./Select.vue";
 </script>
 
 <template>
-  <!-- <h1>{{ msg }}</h1> -->
-  <header>
+  <header class="header">
     <div>
       <img src="../assets/logo.svg" alt="" />
     </div>
     <div class="header-right">
-      <p class="font">Sans-serif</p>
-      <!-- Rounded switch -->
+      <!-- <p class="font">Sans-serif</p> -->
+      <!-- <select name="font" id="font-select">
+        <option value="serif">Serif</option>
+        <option value="sans-serif">Sans-serif</option>
+        <option value="mono">Mono</option>
+      </select> -->
+      <Select />
       <label class="switch">
         <input type="checkbox" />
         <span class="slider round"></span>
@@ -22,7 +26,7 @@
 </template>
 
 <style scoped>
-header {
+.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -77,7 +81,6 @@ header {
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
-
 input:checked + .slider {
   background-color: #2196f3;
 }
@@ -99,5 +102,21 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+/* select */
+#font-select {
+  width: 140px;
+  font-size: 16px;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url("../assets/icon-arrow-down.svg") 96% / 10% no-repeat;
+  padding: 10px 0 10px 10px;
+}
+#font-select:focus {
+  /* Empêcher le focus visuel pour les utilisateurs de clavier */
+  outline: none;
 }
 </style>

@@ -40,6 +40,7 @@ const submit = () => {
   max-width: 740px;
   margin: 0 auto 0 auto;
   border-radius: 1rem;
+  font-family: inherit;
 }
 .container-search {
   display: flex;
