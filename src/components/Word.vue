@@ -102,12 +102,12 @@ const isPhonetic = (phonetics: { text: string }[]) => {
     <div class="name-container">
       <div v-if="index === 0">
         <h1>{{ item.word }}</h1>
-        <p
+        <h2
           v-if="item.phonetics.length != 0 || isPhonetic(item.phonetics)"
           class="pronunciation"
         >
           {{ isPhonetic(item.phonetics)?.text || item.phonetic }}
-        </p>
+        </h2>
       </div>
       <div v-if="index === 0">
         <svg
@@ -141,37 +141,48 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 
     <div v-for="meaning in item.meanings" :key="meaning.id" class="subtitle">
       <h2 class="meaning">{{ meaning.partOfSpeech }}</h2>
-      <p>Meaning</p>
+      <h3 class="mean">Meaning</h3>
       <ul>
         <li v-for="meaningObject in meaning.definitions" :key="meaning.id">
-          {{ meaningObject.definition }}
+          <div>
+            <p>
+              {{ meaningObject.definition }}
+            </p>
+            <p>
+              {{ meaningObject.example }}
+            </p>
+          </div>
         </li>
       </ul>
 
-      <div v-if="meaning.antonyms.length != 0">
-        <p>Antonyms</p>
-        <ul>
+      <div class="antonyms-container" v-if="meaning.antonyms.length != 0">
+        <h3 class="h3-word">Antonyms</h3>
+        <ul class="antonyms-wrap">
           <li v-for="meaningObject in meaning.antonyms" :key="meaning.id">
             {{ meaningObject }}
           </li>
         </ul>
       </div>
 
-      <div v-if="meaning.synonyms.length != 0">
-        <p>Synonyms</p>
-        <ul>
+      <div class="synonyms-container" v-if="meaning.synonyms.length != 0">
+        <h3 class="h3-word">Synonyms</h3>
+        <ul class="synonyms-wrap">
           <li v-for="meaningObject in meaning.synonyms" :key="meaning.id">
             {{ meaningObject }}
           </li>
         </ul>
       </div>
     </div>
-    <div>
+    <hr class="hr" />
+    <div class="source-container">
       <p class="source">Source</p>
       <ul>
-        <li v-for="url in item.sourceUrls">
-          <a :href="url">
-            {{ url }} <img src="../assets/icon-new-window.svg" alt="" />
+        <li v-for="url in item.sourceUrls" class="url-container">
+          <a :href="url" class="url">
+            <p>
+              {{ url }}
+            </p>
+            <img src="../assets/icon-new-window.svg" alt="" />
           </a>
         </li>
       </ul>
@@ -180,14 +191,29 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 </template>
 
 <style scoped>
+.hr {
+  margin-top: 40px;
+  margin-bottom: 25px;
+}
 .section {
   max-width: 740px;
   margin: 0 auto 50px auto;
 }
+.url-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
 
+.url {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
 .pronunciation {
   color: var(--purple);
-  font-size: 24px;
 }
 
 .name-container {
@@ -209,10 +235,25 @@ const isPhonetic = (phonetics: { text: string }[]) => {
   grid-auto-flow: column;
   grid-template-columns: auto 1fr;
   gap: 2rem;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.mean {
+  margin-bottom: 25px;
 }
 
 ul {
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+ul li {
+  display: flex;
+  gap: 16px;
 }
 
 ul li::before {
@@ -220,12 +261,48 @@ ul li::before {
   color: var(--purple);
   font-weight: bold;
   display: inline-block;
-  width: 1em;
+  /* width: 1em; */
+}
+
+.source-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.source-container ul {
+  margin-bottom: 0px;
+}
+
+.source-container ul li::before,
+.synonyms-container li::before,
+.antonyms-container li::before {
+  content: "";
+  width: 0em;
+}
+
+.synonyms-wrap,
+.antonyms-wrap {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  color: var(--purple);
+  margin-bottom: 0;
+}
+
+.synonyms-container,
+.antonyms-container {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.h3-word {
 }
 
 .source {
-  border-top: 1px solid #fff;
-  padding-top: 1.5rem;
+  /* border-top: 1px solid #fff; */
 }
 
 /* test */

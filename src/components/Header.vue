@@ -39,12 +39,6 @@ const toggleDarkMode = () => {
 </template>
 
 <style scoped>
-/* Dark mode styles */
-.dark-mode {
-  background-color: blue;
-  color: red;
-}
-
 .header {
   display: flex;
   align-items: center;
@@ -101,11 +95,11 @@ const toggleDarkMode = () => {
   transition: 0.4s;
 }
 input:checked + .slider {
-  background-color: #2196f3;
+  background-color: var(--purple);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
+  box-shadow: 0 0 1px var(--purple);
 }
 
 input:checked + .slider:before {
