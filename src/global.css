@@ -59,6 +59,12 @@
   --heading-s-ln: 24px;
   --body-m-ln: 24px;
   --body-s-ln: 17px;
+  /* light mode */
+  --bg: var(--white);
+  --title: var(--black-2);
+  --bg-input: var(--grey-light);
+  --color-input: var(--black-2);
+  --stroke: var(--grey-primary);
 }
 
 /* reset */
@@ -66,10 +72,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-body {
-  background-color: var(--grey-light);
-  color: var(--black-4);
 }
 
 img {
@@ -94,4 +96,14 @@ h3 {
 
 body {
   font-family: var(--sans-serif-regular);
+  background-color: var(--bg);
+  color: var(--title);
+}
+
+.dark-mode {
+  --bg: var(--black-4);
+  --title: var(--white);
+  --bg-input: var(--black-1);
+  --color-input: var(--white);
+  --stroke: var(--black-1);
 }

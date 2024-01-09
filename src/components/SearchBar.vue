@@ -34,7 +34,8 @@ const submit = () => {
 .search-input {
   padding: 20px;
   border: none;
-  background-color: var(--grey-dark);
+  background-color: var(--bg-input);
+  color: var(--color-input);
   font: 1.25rem;
   width: 100%;
   max-width: 740px;

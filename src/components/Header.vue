@@ -8,14 +8,10 @@ const toggleDarkMode = () => {
 
   const body = document.body;
   if (isDarkMode.value) {
-    // body.classList.add("dark-mode");
-    body.style.backgroundColor = "black";
-    body.style.color = "white";
+    body.classList.add("dark-mode");
     console.log("dark");
   } else {
-    // body.classList.remove("dark-mode");
-    body.style.backgroundColor = "white";
-    body.style.color = "black";
+    body.classList.remove("dark-mode");
     console.log("light");
   }
 };
@@ -78,7 +74,7 @@ const toggleDarkMode = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: var(--grey-dark);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }

@@ -148,7 +148,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
             <p>
               {{ meaningObject.definition }}
             </p>
-            <p>
+            <p class="example">
               {{ meaningObject.example }}
             </p>
           </div>
@@ -226,7 +226,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 .meaning:after {
   content: "";
   align-self: center;
-  background: #fff;
+  background: var(--stroke);
   height: 1px;
   margin-top: 10px;
 }
@@ -241,6 +241,11 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 
 .mean {
   margin-bottom: 25px;
+  color: var(--grey-dark);
+}
+
+.example {
+  color: var(--grey-dark);
 }
 
 ul {
