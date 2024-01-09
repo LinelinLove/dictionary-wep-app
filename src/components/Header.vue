@@ -4,15 +4,13 @@ import Select from "./Select.vue";
 const isDarkMode = ref(false);
 
 const toggleDarkMode = () => {
-  console.log("Dark mode toggled:", isDarkMode.value);
+  // console.log("Dark mode toggled:", isDarkMode.value);
 
   const body = document.body;
   if (isDarkMode.value) {
     body.classList.add("dark-mode");
-    console.log("dark");
   } else {
     body.classList.remove("dark-mode");
-    console.log("light");
   }
 };
 </script>

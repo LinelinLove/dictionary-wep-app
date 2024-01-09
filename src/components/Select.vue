@@ -38,9 +38,9 @@ import { ref, watch } from "vue";
 
 const showDropdown = ref(false);
 const options = ref([
-  { name: "Serif", font: "var(--sans-serif-regular)" },
-  { name: "Sans-serif", font: "var(--serif-regular)" },
-  { name: "Mono", font: "var(--mono-regular)" },
+  { name: "Serif", font: "var(--sans-serif)" },
+  { name: "Sans-serif", font: "var(--serif)" },
+  { name: "Mono", font: "var(--mono)" },
 ]);
 const selectedOption = ref(options.value[0]);
 
@@ -91,7 +91,7 @@ watch(selectedOption, (newVal) => {
 .options div {
   padding: 10px;
   cursor: pointer;
-  background-color: var(--grey-primary);
+  background-color: var(--bg-select);
   color: inherit;
 }
 

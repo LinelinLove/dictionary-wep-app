@@ -101,7 +101,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
   <section v-for="(item, index) in apiData" :key="index" class="section">
     <div class="name-container">
       <div v-if="index === 0">
-        <h1>{{ item.word }}</h1>
+        <h1 class="word">{{ item.word }}</h1>
         <h2
           v-if="item.phonetics.length != 0 || isPhonetic(item.phonetics)"
           class="pronunciation"
@@ -214,6 +214,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 }
 .pronunciation {
   color: var(--purple);
+  font-weight: 400;
 }
 
 .name-container {
@@ -242,10 +243,15 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 .mean {
   margin-bottom: 25px;
   color: var(--grey-dark);
+  font-weight: 400;
 }
 
 .example {
   color: var(--grey-dark);
+}
+
+.word {
+  font-weight: 900;
 }
 
 ul {

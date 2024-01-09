@@ -42,6 +42,8 @@ const submit = () => {
   margin: 0 auto 0 auto;
   border-radius: 1rem;
   font-family: inherit;
+  font-weight: 700;
+  font-size: var(--heading-s);
 }
 .container-search {
   display: flex;
