@@ -1,33 +1,3 @@
-/* @font-face {
-  font-family: "Inter Regular";
-  src: url("./assets/fonts/Inter-Regular.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Inter Bold";
-  src: url("./assets/fonts/Inter-Bold.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Inconsolata Bold";
-  src: url("./assets/fonts/Inconsolata-Bold.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Inconsolata Regular";
-  src: url("./assets/fonts/Inconsolata-Regular.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Lora Regular";
-  src: url("./assets/fonts/Lora-Regular.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Lora Regular";
-  src: url("./assets/fonts/Lora-Regular.ttf") format("truetype");
-} */
-
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&family=Inter:wght@400;700&family=Lora:wght@400;700&display=swap");
 
 :root {
@@ -43,12 +13,6 @@
   --black-3: #1f1f1f;
   --black-4: #050505;
   /* fonts */
-  /* --mono-regular: "Inconsolata Regular", monospace;
-  --mono-bold: "Inconsolata Bold", monospace;
-  --serif-regular: "Lora Regular", serif;
-  --serif-bold: "Lora Bold", serif;
-  --sans-serif-regular: "Inter Regular", sans-serif;
-  --sans-serif-bold: "Inter Bold", sans-serif; */
   --mono: "Inconsolata", monospace;
   --sans-serif: "Inter", sans-serif;
   --serif: "Lora", serif;
@@ -101,7 +65,7 @@ h3 {
 }
 
 body {
-  font-family: var(--sans-serif-regular);
+  font-family: var(--sans-serif);
   background-color: var(--bg);
   color: var(--title);
 }

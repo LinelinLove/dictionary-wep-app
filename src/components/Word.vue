@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { ref, watch, defineProps } from "vue";
+import { ref, watch, defineProps, onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+const wordParam = ref("");
+const router = useRouter();
+
+onMounted(() => {
+  wordParam.value = router.currentRoute.value.params.word;
+  console.log(wordParam.value);
+});
 
 const apiData = ref([] as any[]);
 const props = defineProps(["searchValue"]);
@@ -158,8 +167,14 @@ const isPhonetic = (phonetics: { text: string }[]) => {
       <div class="antonyms-container" v-if="meaning.antonyms.length != 0">
         <h3 class="h3-word">Antonyms</h3>
         <ul class="antonyms-wrap">
-          <li v-for="meaningObject in meaning.antonyms" :key="meaning.id">
-            {{ meaningObject }}
+          <li
+            class="link-word"
+            v-for="meaningObject in meaning.antonyms"
+            :key="meaning.id"
+          >
+            <a href="#">
+              {{ meaningObject }}
+            </a>
           </li>
         </ul>
       </div>
@@ -167,8 +182,19 @@ const isPhonetic = (phonetics: { text: string }[]) => {
       <div class="synonyms-container" v-if="meaning.synonyms.length != 0">
         <h3 class="h3-word">Synonyms</h3>
         <ul class="synonyms-wrap">
-          <li v-for="meaningObject in meaning.synonyms" :key="meaning.id">
-            {{ meaningObject }}
+          <li
+            class="link-word"
+            v-for="meaningObject in meaning.synonyms"
+            :key="meaning.id"
+          >
+            <!-- <a href="#">
+              {{ meaningObject }}
+            </a> -->
+            <router-link
+              :to="{ name: 'WordDetail', params: { word: meaningObject } }"
+            >
+              {{ meaningObject }}
+            </router-link>
           </li>
         </ul>
       </div>
@@ -176,7 +202,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
     <hr class="hr" />
     <div class="source-container">
       <p class="source">Source</p>
-      <ul>
+      <ul class="synonyms-wrap">
         <li v-for="url in item.sourceUrls" class="url-container">
           <a :href="url" class="url">
             <p>
@@ -191,6 +217,11 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 </template>
 
 <style scoped>
+.source {
+  color: var(--grey-dark);
+  font-size: var(--body-s);
+}
+
 .hr {
   margin-top: 40px;
   margin-bottom: 25px;
@@ -211,6 +242,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  color: var(--title);
 }
 .pronunciation {
   color: var(--purple);
@@ -233,6 +265,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 }
 .meaning {
   display: grid;
+  font-style: italic;
   grid-auto-flow: column;
   grid-template-columns: auto 1fr;
   gap: 2rem;
@@ -252,6 +285,21 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 
 .word {
   font-weight: 900;
+}
+
+.link-word {
+  font-weight: 700;
+}
+
+.link-word a {
+  color: var(--purple);
+  text-decoration: none;
+}
+
+.h3-word {
+  font-weight: 400;
+  font-size: var(--heading-s);
+  color: var(--grey-dark);
 }
 
 ul {
@@ -307,13 +355,6 @@ ul li::before {
   display: flex;
   gap: 25px;
   align-items: center;
-}
-
-.h3-word {
-}
-
-.source {
-  /* border-top: 1px solid #fff; */
 }
 
 /* test */

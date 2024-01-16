@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Select from "./Select.vue";
+
 const isDarkMode = ref(false);
 
 const toggleDarkMode = () => {
-  // console.log("Dark mode toggled:", isDarkMode.value);
-
+  // console.log("Toggle Dark Mode:", isDarkMode.value);
   const body = document.body;
   if (isDarkMode.value) {
     body.classList.add("dark-mode");
   } else {
     body.classList.remove("dark-mode");
   }
+};
+
+const toggleDarkModeFromImage = () => {
+  isDarkMode.value = !isDarkMode.value;
+  toggleDarkMode();
 };
 </script>
 
@@ -27,7 +32,11 @@ const toggleDarkMode = () => {
         <span class="slider round"></span>
       </label>
 
-      <img src="../assets/icon-moon.svg" alt="" />
+      <img
+        @click="toggleDarkModeFromImage"
+        src="../assets/icon-moon.svg"
+        alt=""
+      />
     </div>
   </header>
 </template>
