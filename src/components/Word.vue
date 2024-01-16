@@ -157,8 +157,8 @@ const isPhonetic = (phonetics: { text: string }[]) => {
             <p>
               {{ meaningObject.definition }}
             </p>
-            <p class="example">
-              {{ meaningObject.example }}
+            <p v-if="meaningObject.example" class="example">
+              "{{ meaningObject.example }}"
             </p>
           </div>
         </li>
@@ -172,9 +172,11 @@ const isPhonetic = (phonetics: { text: string }[]) => {
             v-for="meaningObject in meaning.antonyms"
             :key="meaning.id"
           >
-            <a href="#">
+            <router-link
+              :to="{ name: 'WordDetail', params: { word: meaningObject } }"
+            >
               {{ meaningObject }}
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -202,7 +204,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
     <hr class="hr" />
     <div class="source-container">
       <p class="source">Source</p>
-      <ul class="synonyms-wrap">
+      <ul class="source-wrap">
         <li v-for="url in item.sourceUrls" class="url-container">
           <a :href="url" class="url">
             <p>
@@ -217,9 +219,16 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 </template>
 
 <style scoped>
+.source-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
 .source {
   color: var(--grey-dark);
   font-size: var(--body-s);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .hr {
@@ -285,6 +294,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 
 .word {
   font-weight: 900;
+  word-break: break-all;
 }
 
 .link-word {
@@ -387,5 +397,33 @@ ul li::before {
 .circle-fill.hovered {
   fill: #a445ed;
   opacity: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .source-container {
+    flex-direction: column;
+    word-break: break-all;
+    align-items: flex-start;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  /* .source-container {
+    flex-direction: column;
+    word-break: break-all;
+    align-items: flex-start;
+  } */
+  .url-container {
+    flex-wrap: wrap;
+  }
+
+  .url {
+    align-items: flex-start;
+  }
+
+  .play-icon {
+    width: 48px;
+    height: 48px;
+  }
 }
 </style>

@@ -69,6 +69,7 @@ body {
   font-family: var(--sans-serif);
   background-color: var(--bg);
   color: var(--title);
+  font-size: var(--body-m);
 }
 
 .dark-mode {
@@ -79,4 +80,44 @@ body {
   --stroke: var(--black-1);
   --bg-select: var(--black-3);
   --shadow: 0px 5px 30px hsl(274deg, 82%, 50%);
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    margin: 0 40px;
+  }
+  :root {
+    /* size */
+    --heading-l: 64px;
+    --heading-m: 24px;
+    --heading-s: 20px;
+    --body-m: 18px;
+    --body-s: 14px;
+    /* line-height */
+    --heading-l-ln: 77px;
+    --heading-m-ln: 29px;
+    --heading-s-ln: 24px;
+    --body-m-ln: 24px;
+    --body-s-ln: 17px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  :root {
+    /* size */
+    --heading-l: 32px;
+    --heading-m: 24px;
+    --heading-s: 20px;
+    --body-m: 15px;
+    --body-s: 14px;
+    /* line-height */
+    --heading-l-ln: 77px;
+    --heading-m-ln: 29px;
+    --heading-s-ln: 24px;
+    --body-m-ln: 24px;
+    --body-s-ln: 17px;
+  }
+  body {
+    margin: 0 25px;
+  }
 }
