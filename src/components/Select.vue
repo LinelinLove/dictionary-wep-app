@@ -26,6 +26,7 @@
         :key="option.name"
         @click="selectOption(option)"
         :style="{ fontFamily: option.font }"
+        :class="{ 'selected-font': option === selectedOption }"
       >
         {{ option.name }}
       </div>
@@ -34,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, onMounted, onUnmounted } from "vue";
 
 const showDropdown = ref(false);
 const options = ref([
@@ -57,9 +58,30 @@ const selectOption = (option: any) => {
 watch(selectedOption, (newVal) => {
   document.body.style.fontFamily = newVal.font;
 });
+
+// Handle clicks outside of the custom-select
+const handleClickOutside = (event: MouseEvent) => {
+  const customSelect = document.querySelector(".custom-select");
+  if (customSelect && !customSelect.contains(event.target as Node)) {
+    showDropdown.value = false;
+  }
+};
+
+// Add event listener on component mount and remove it on unmount
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
 
 <style scoped>
+.selected-font {
+  color: var(--purple) !important;
+}
+
 .custom-select {
   position: relative;
   width: 140px;
@@ -86,6 +108,9 @@ watch(selectedOption, (newVal) => {
   left: 0;
   width: 100%;
   z-index: 10;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  border-radius: 8px;
 }
 
 .options div {
@@ -95,7 +120,11 @@ watch(selectedOption, (newVal) => {
   color: inherit;
 }
 
-.custom-select:hover .options {
+.options div:hover {
+  color: var(--purple);
+}
+
+.custom-select .options {
   display: block;
 }
 </style>

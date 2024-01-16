@@ -101,7 +101,13 @@ const submit = () => {
   font-family: inherit;
   font-weight: 700;
   font-size: var(--heading-s);
+  outline: none;
 }
+
+input:focus {
+  outline: 2px solid var(--purple);
+}
+
 .container-search {
   display: flex;
   align-items: center;
