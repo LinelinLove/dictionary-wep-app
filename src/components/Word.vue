@@ -1,9 +1,23 @@
 <script setup lang="ts">
 import { ref, watch, defineProps, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import Spinner from "./Spinner.vue";
 
 const wordParam = ref("");
 const router = useRouter();
+const loading = ref(false);
+
+interface ErrorMessage {
+  title: string;
+  message: string;
+  resolution: string;
+}
+
+const errorMsg: ErrorMessage = {
+  title: "",
+  message: "",
+  resolution: "",
+};
 
 onMounted(() => {
   wordParam.value = router.currentRoute.value.params.word;
@@ -26,25 +40,40 @@ watch(() => {
 });
 
 const fetchData = async () => {
+  loading.value = true; // Activez le chargement au début de la recherche
   const searchTerm = props.searchValue;
   // console.log("Search term in Word component:", searchTerm);
 
   try {
+    errorMsg.title = "";
+    errorMsg.message = "";
+    errorMsg.resolution = "";
     const response = await fetch(
       `https://api.dictionaryapi.dev/api/v2/entries/en/${searchTerm}`
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
+    if (response.ok) {
+      apiData.value = await response.json();
+      console.log(apiData.value);
+
+      // Appeler playFirstAudio ici directement après le fetch
+      isAudio(apiData.value[0]?.phonetics || []);
+    } else {
+      // Gérer le cas où la requête a échoué
+      console.error("Failed to fetch data. Status:", response.status);
+
+      // Si vous souhaitez également récupérer le contenu de la réponse en cas d'échec,
+      // vous pouvez utiliser response.text() ou response.json() ici
+      const errorMessage = await response.json();
+      // console.log("Error message from API:", errorMessage);
+      errorMsg.title = errorMessage.title;
+      errorMsg.message = errorMessage.message;
+      errorMsg.resolution = errorMessage.resolution;
     }
-
-    apiData.value = await response.json();
-    console.log(apiData.value);
-
-    // Appeler playFirstAudio ici directement après le fetch
-    isAudio(apiData.value[0]?.phonetics || []);
   } catch (error) {
     console.error("Error fetching data:", error);
+  } finally {
+    loading.value = false; // Désactivez le chargement une fois la recherche terminée
   }
 };
 
@@ -107,7 +136,22 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 </script>
 
 <template>
-  <section v-for="(item, index) in apiData" :key="index" class="section">
+  <section v-if="loading" class="loader section">
+    <!-- Mettez ici votre élément de chargement, par exemple un spinner -->
+    <Spinner />
+  </section>
+
+  <section v-else-if="errorMsg.title != ''" class="error section">
+    <h1>😕</h1>
+    <h2>
+      {{ errorMsg.title }}
+    </h2>
+    <h3>
+      {{ errorMsg.message }}
+    </h3>
+  </section>
+
+  <section v-else v-for="(item, index) in apiData" :key="index" class="section">
     <div class="name-container">
       <div v-if="index === 0">
         <h1 class="word">{{ item.word }}</h1>
@@ -164,41 +208,45 @@ const isPhonetic = (phonetics: { text: string }[]) => {
         </li>
       </ul>
 
-      <div class="antonyms-container" v-if="meaning.antonyms.length != 0">
-        <h3 class="h3-word">Antonyms</h3>
-        <ul class="antonyms-wrap">
-          <li
-            class="link-word"
-            v-for="meaningObject in meaning.antonyms"
-            :key="meaning.id"
-          >
-            <router-link
-              :to="{ name: 'WordDetail', params: { word: meaningObject } }"
+      <div v-if="meaning.antonyms.length != 0">
+        <div class="antonyms-container">
+          <h3 class="h3-word">Antonyms</h3>
+          <ul class="antonyms-wrap">
+            <li
+              class="link-word"
+              v-for="meaningObject in meaning.antonyms"
+              :key="meaning.id"
             >
-              {{ meaningObject }}
-            </router-link>
-          </li>
-        </ul>
+              <router-link
+                :to="{ name: 'WordDetail', params: { word: meaningObject } }"
+              >
+                {{ meaningObject }}
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </div>
-
-      <div class="synonyms-container" v-if="meaning.synonyms.length != 0">
-        <h3 class="h3-word">Synonyms</h3>
-        <ul class="synonyms-wrap">
-          <li
-            class="link-word"
-            v-for="meaningObject in meaning.synonyms"
-            :key="meaning.id"
-          >
-            <!-- <a href="#">
-              {{ meaningObject }}
-            </a> -->
-            <router-link
-              :to="{ name: 'WordDetail', params: { word: meaningObject } }"
+      <div
+        v-if="meaning.synonyms.length != 0 && meaning.antonyms.length != 0"
+        class="space-between"
+      ></div>
+      <div v-if="meaning.synonyms.length != 0">
+        <div class="synonyms-container">
+          <h3 class="h3-word">Synonyms</h3>
+          <ul class="synonyms-wrap">
+            <li
+              class="link-word"
+              v-for="meaningObject in meaning.synonyms"
+              :key="meaning.id"
             >
-              {{ meaningObject }}
-            </router-link>
-          </li>
-        </ul>
+              <router-link
+                :to="{ name: 'WordDetail', params: { word: meaningObject } }"
+              >
+                {{ meaningObject }}
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <hr class="hr" />
@@ -206,7 +254,7 @@ const isPhonetic = (phonetics: { text: string }[]) => {
       <p class="source">Source</p>
       <ul class="source-wrap">
         <li v-for="url in item.sourceUrls" class="url-container">
-          <a :href="url" class="url">
+          <a :href="url" class="url" target="_blank">
             <p>
               {{ url }}
             </p>
@@ -219,6 +267,26 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 </template>
 
 <style scoped>
+.space-between {
+  margin-top: 20px;
+}
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  flex-direction: column;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .source-wrap {
   display: flex;
   flex-direction: column;
@@ -299,6 +367,11 @@ const isPhonetic = (phonetics: { text: string }[]) => {
 
 .link-word {
   font-weight: 700;
+  display: inline;
+}
+
+.link-word:not(:last-child)::after {
+  content: ", ";
 }
 
 .link-word a {
@@ -310,6 +383,8 @@ const isPhonetic = (phonetics: { text: string }[]) => {
   font-weight: 400;
   font-size: var(--heading-s);
   color: var(--grey-dark);
+  display: inline;
+  margin-right: 16px;
 }
 
 ul {
@@ -353,18 +428,18 @@ ul li::before {
 
 .synonyms-wrap,
 .antonyms-wrap {
-  display: flex;
-  flex-direction: row;
-  gap: 3px;
+  display: inline;
+  /* flex-direction: row; */
+  /* gap: 3px; */
   color: var(--purple);
   margin-bottom: 0;
 }
 
 .synonyms-container,
 .antonyms-container {
-  display: flex;
-  gap: 25px;
-  align-items: center;
+  display: inline;
+  /* gap: 25px; */
+  /* align-items: center; */
 }
 
 /* test */
@@ -408,11 +483,6 @@ ul li::before {
 }
 
 @media screen and (max-width: 375px) {
-  /* .source-container {
-    flex-direction: column;
-    word-break: break-all;
-    align-items: flex-start;
-  } */
   .url-container {
     flex-wrap: wrap;
   }

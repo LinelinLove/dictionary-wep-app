@@ -1,43 +1,3 @@
-<!-- <script setup lang="ts">
-import { ref, defineEmits } from "vue";
-
-const emits = defineEmits();
-
-const inputValue = ref("");
-
-const handleChange = () => {
-  emits("submit", inputValue.value);
-};
-
-const submit = () => {
-  handleChange();
-};
-
-const handleKeyPress = (event: KeyboardEvent) => {
-  if (event.key === "Enter") {
-    submit();
-    console.log("enter is pressed !");
-  }
-};
-</script>
-
-<template>
-  <div class="container-search">
-    <div class="search-div">
-      <input
-        class="search-input"
-        type="text"
-        v-model="inputValue"
-        placeholder="Search for any word..."
-        @keyup.enter="handleKeyPress"
-      />
-      <button class="search-icon" @click="submit">
-        <img src="../assets/icon-search.svg" alt="" />
-      </button>
-    </div>
-  </div>
-</template> -->
-
 <template>
   <div class="container-search">
     <div class="search-div">
@@ -48,11 +8,9 @@ const handleKeyPress = (event: KeyboardEvent) => {
         placeholder="Search for any word..."
         @keyup.enter="submit"
       />
-      <!-- <router-link :to="{ name: 'WordDetail', params: { word: inputValue } }"> -->
       <button class="search-icon" @click="submit">
         <img src="../assets/icon-search.svg" alt="" />
       </button>
-      <!-- </router-link> -->
     </div>
   </div>
 </template>
